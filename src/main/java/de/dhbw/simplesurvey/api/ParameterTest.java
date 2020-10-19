@@ -11,7 +11,7 @@ public class ParameterTest {
 
 	@RequestMapping("/test")
 	public Survey returnParameter(@RequestParam String parameter) {
-		return new Survey(parameter);
+		return null;
 	}
 	
 }
