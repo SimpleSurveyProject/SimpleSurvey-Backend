@@ -10,3 +10,4 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 COPY --from=MAVEN_BUILD /build/target/simplesurvey-0.0.1-SNAPSHOT.jar /app/
 ENTRYPOINT ["java", "-jar", "simplesurvey-0.0.1-SNAPSHOT.jar"]
+EXPOSE 1337
