@@ -14,7 +14,7 @@ public class SurveyDB {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	Integer id;
+	final Integer id;
 	
 	@NonNull
 	String title;
