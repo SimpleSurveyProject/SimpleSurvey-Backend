@@ -14,7 +14,7 @@ public class UserDB {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	final Integer id;
+	Integer id;
 	
 	@NonNull
 	String name;

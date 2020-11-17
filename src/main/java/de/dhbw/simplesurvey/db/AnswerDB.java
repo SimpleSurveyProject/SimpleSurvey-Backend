@@ -14,7 +14,7 @@ public class AnswerDB {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	final Integer id;
+	Integer id;
 	
 	@NonNull
 	Integer questionid;
