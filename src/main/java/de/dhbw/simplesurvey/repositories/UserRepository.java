@@ -9,7 +9,7 @@ import de.dhbw.simplesurvey.models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-	Optional<User> findByUsername(String username);
+	Optional<User> findByName(String name);
 
-	Boolean existsByUsername(String username);
+	Boolean existsByName(String name);
 }
