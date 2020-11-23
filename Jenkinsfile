@@ -6,7 +6,7 @@ pipeline {
       steps {
         echo 'Building container image...'
         script {
-          dockerInstance = docker.build(imageName, "--network host -f Dockerfile .")
+          dockerInstance = docker.build(imageName, "-e DB_PASSWORD --network host -f Dockerfile .")
         }
 
       }
