@@ -33,4 +33,14 @@ public class Survey {
 	@ManyToOne
 	@JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
 	private User owner;
+
+	public Survey(String title, String description, User owner) {
+		this.title = title;
+		this.description = description;
+		this.owner = owner;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
 }

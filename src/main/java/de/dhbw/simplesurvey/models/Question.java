@@ -31,4 +31,8 @@ public class Question {
 	@JoinColumn(name = "surveyid", referencedColumnName = "id", nullable = false)
 	private Survey survey;
 
+	public Question(String text, Survey survey) {
+		this.text = text;
+		this.survey = survey;
+	}
 }
