@@ -62,4 +62,21 @@ public class User {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+
+	public Set<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(Set<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Set<Survey> getSurveys() {
+		return surveys;
+	}
+
+	public void setSurveys(Set<Survey> surveys) {
+		this.surveys = surveys;
+	}
+
 }
