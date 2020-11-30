@@ -31,4 +31,44 @@ public class Question {
 	@JoinColumn(name = "surveyid", referencedColumnName = "id", nullable = false)
 	private Survey survey;
 
+	public Question(String text, Survey survey) {
+		this.text = text;
+		this.survey = survey;
+	}
+
+	public Question() {
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public Set<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(Set<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Survey getSurvey() {
+		return survey;
+	}
+
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
+	}
+
 }
