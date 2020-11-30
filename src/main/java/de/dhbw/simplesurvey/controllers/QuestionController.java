@@ -37,19 +37,21 @@ public class QuestionController {
 	UserRepository userRepository;
 
 	@PostMapping("/add")
-	public ResponseEntity<?> addQuestion(@Valid @RequestBody AddQuestionRequest addQuestionRequest) {
+	public ResponseEntity<?> addQuestion(@Valid @RequestBody AddQuestionRequest[] addQuestionRequests) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			String username = user.getUsername();
 
-			if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner().getId() == userRepository
-					.findByName(username).get().getId()) {
-				Question question = new Question(addQuestionRequest.getText(),
-						surveyRepository.findById(addQuestionRequest.getSurveyId()).get());
-				questionRepository.save(question);
-				return ResponseEntity.ok(new MessageResponse("Question added successfully"));
+			for (AddQuestionRequest addQuestionRequest : addQuestionRequests) {
+				if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner()
+						.getId() == userRepository.findByName(username).get().getId()) {
+					System.out.println(addQuestionRequest);
+					questionRepository.save(new Question(addQuestionRequest.getText(),
+							surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
+				}
 			}
+			return ResponseEntity.ok(new MessageResponse("Question added successfully"));
 		}
 		return ResponseEntity.badRequest().body(new MessageResponse("Error: Please login"));
 	}
