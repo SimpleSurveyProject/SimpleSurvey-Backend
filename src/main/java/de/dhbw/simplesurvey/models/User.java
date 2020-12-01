@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -22,9 +24,11 @@ public class User {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String name;
 
+	@JsonIgnore
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String pass;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private Set<Answer> answers;
 

@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -24,9 +26,11 @@ public class Question {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String text;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "question")
 	private Set<Answer> answers;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "surveyid", referencedColumnName = "id", nullable = false)
 	private Survey survey;

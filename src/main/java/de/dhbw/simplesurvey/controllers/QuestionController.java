@@ -46,7 +46,6 @@ public class QuestionController {
 			for (AddQuestionRequest addQuestionRequest : addQuestionRequests) {
 				if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner()
 						.getId() == userRepository.findByName(username).get().getId()) {
-					System.out.println(addQuestionRequest);
 					questionRepository.save(new Question(addQuestionRequest.getText(),
 							surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
 				}
