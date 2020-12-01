@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.simplesurvey.models.Survey;
 import de.dhbw.simplesurvey.payload.request.CreateSurveyRequest;
+import de.dhbw.simplesurvey.payload.request.GetSurveyRequest;
 import de.dhbw.simplesurvey.payload.response.MessageResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyCreatedResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyListResponse;
+import de.dhbw.simplesurvey.payload.response.SurveyResponse;
 import de.dhbw.simplesurvey.repositories.SurveyRepository;
 import de.dhbw.simplesurvey.repositories.UserRepository;
 import de.dhbw.simplesurvey.security.services.UserDetailsImpl;
@@ -61,5 +63,12 @@ public class SurveyController {
 		} else {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Please login"));
 		}
+	}
+
+	@PostMapping("/getbyid")
+	public ResponseEntity<?> getSurvey(@Valid @RequestBody GetSurveyRequest getSurveyRequest) {
+		Survey survey = surveyRepository.findById(getSurveyRequest.getSurveyId()).get();
+		return ResponseEntity.ok(new SurveyResponse(survey));
+
 	}
 }

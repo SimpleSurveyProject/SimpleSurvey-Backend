@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -21,10 +23,12 @@ public class Answer {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String text;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "questionid", referencedColumnName = "id", nullable = false)
 	private Question question;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userid", referencedColumnName = "id", nullable = false)
 	private User user;
@@ -61,6 +65,12 @@ public class Answer {
 	}
 
 	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Answer(String text, Question question, User user) {
+		this.text = text;
+		this.question = question;
 		this.user = user;
 	}
 
