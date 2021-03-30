@@ -12,7 +12,10 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Data
 @Entity
 public class User {
@@ -21,9 +24,11 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@NonNull
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String name;
 
+	@NonNull
 	@JsonIgnore
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String pass;
@@ -34,53 +39,5 @@ public class User {
 
 	@OneToMany(mappedBy = "owner")
 	private Set<Survey> surveys;
-
-	public User() {
-	}
-
-	public User(String name, String pass) {
-		this.name = name;
-		this.pass = pass;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPass() {
-		return pass;
-	}
-
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
-
-	public Set<Answer> getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(Set<Answer> answers) {
-		this.answers = answers;
-	}
-
-	public Set<Survey> getSurveys() {
-		return surveys;
-	}
-
-	public void setSurveys(Set<Survey> surveys) {
-		this.surveys = surveys;
-	}
 
 }

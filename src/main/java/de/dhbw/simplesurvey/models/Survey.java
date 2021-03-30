@@ -14,7 +14,10 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Data
 @Entity
 public class Survey {
@@ -23,9 +26,11 @@ public class Survey {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@NonNull
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String title;
 
+	@NonNull
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String description;
 
@@ -33,58 +38,10 @@ public class Survey {
 	@OneToMany(mappedBy = "survey")
 	private Set<Question> questions;
 
+	@NonNull
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
 	private User owner;
-
-	public Survey(String title, String description, User owner) {
-		this.title = title;
-		this.description = description;
-		this.owner = owner;
-	}
-
-	public Survey() {
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Set<Question> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(Set<Question> questions) {
-		this.questions = questions;
-	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
 
 }

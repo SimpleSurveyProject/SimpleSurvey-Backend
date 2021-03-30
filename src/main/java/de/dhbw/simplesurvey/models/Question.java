@@ -14,7 +14,10 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Data
 @Entity
 public class Question {
@@ -23,6 +26,7 @@ public class Question {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@NonNull
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String text;
 
@@ -30,49 +34,10 @@ public class Question {
 	@OneToMany(mappedBy = "question")
 	private Set<Answer> answers;
 
+	@NonNull
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "surveyid", referencedColumnName = "id", nullable = false)
 	private Survey survey;
-
-	public Question(String text, Survey survey) {
-		this.text = text;
-		this.survey = survey;
-	}
-
-	public Question() {
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public Set<Answer> getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(Set<Answer> answers) {
-		this.answers = answers;
-	}
-
-	public Survey getSurvey() {
-		return survey;
-	}
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
-	}
 
 }

@@ -42,26 +42,24 @@ public class SurveyController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			String username = user.getUsername();
-			Survey survey = new Survey(createSurveyRequest.getTitle(), createSurveyRequest.getDescription(),
-					userRepository.findByName(username).get());
+			Survey survey = new Survey(createSurveyRequest.getTitle(), createSurveyRequest.getDescription(), userRepository.findByName(username).get());
 			surveyRepository.save(survey);
 			return ResponseEntity.ok(new SurveyCreatedResponse(survey.getId()));
 		} else {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Please login"));
+			return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 		}
 
 	}
 
 	@GetMapping("/getown")
 	public ResponseEntity<?> getOwnSurveys() {
-
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			List<Survey> surveys = surveyRepository.findByOwner(userRepository.findById(user.getId()).get());
 			return ResponseEntity.ok(new SurveyListResponse(surveys));
 		} else {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Please login"));
+			return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 		}
 	}
 

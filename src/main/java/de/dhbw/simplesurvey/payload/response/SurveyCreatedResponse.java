@@ -1,17 +1,10 @@
 package de.dhbw.simplesurvey.payload.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class SurveyCreatedResponse {
-    private int id;
-
-    public SurveyCreatedResponse(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+	private int id;
 }
