@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.simplesurvey.models.Question;
-import de.dhbw.simplesurvey.payload.request.AddQuestionRequest;
-import de.dhbw.simplesurvey.payload.request.GetQuestionsRequest;
+import de.dhbw.simplesurvey.payload.request.survey.AddQuestionRequest;
+import de.dhbw.simplesurvey.payload.request.survey.GetQuestionsRequest;
 import de.dhbw.simplesurvey.payload.response.MessageResponse;
 import de.dhbw.simplesurvey.payload.response.QuestionListResponse;
 import de.dhbw.simplesurvey.repositories.QuestionRepository;
 import de.dhbw.simplesurvey.repositories.SurveyRepository;
 import de.dhbw.simplesurvey.repositories.UserRepository;
 import de.dhbw.simplesurvey.security.services.UserDetailsImpl;
+import de.dhbw.simplesurvey.types.ResponseType;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -44,25 +45,22 @@ public class QuestionController {
 			String username = user.getUsername();
 
 			for (AddQuestionRequest addQuestionRequest : addQuestionRequests) {
-				if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner()
-						.getId() == userRepository.findByName(username).get().getId()) {
-					questionRepository.save(new Question(addQuestionRequest.getText(),
-							surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
+				if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner().getId() == userRepository.findByName(username).get().getId()) {
+					questionRepository.save(new Question(addQuestionRequest.getText(), surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
 				}
 			}
-			return ResponseEntity.ok(new MessageResponse("Question added successfully"));
+			return ResponseEntity.ok(new MessageResponse("question added successfully", ResponseType.SUCCESS));
 		}
-		return ResponseEntity.badRequest().body(new MessageResponse("Error: Please login"));
+		return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 	}
 
 	@PostMapping("/get")
 	public ResponseEntity<?> getQuestionsForSurvey(@Valid @RequestBody GetQuestionsRequest getQuestionsRequest) {
 		if (surveyRepository.findById(getQuestionsRequest.getSurveyId()).isPresent()) {
-			List<Question> questions = questionRepository
-					.findBySurvey(surveyRepository.findById(getQuestionsRequest.getSurveyId()).get());
+			List<Question> questions = questionRepository.findBySurvey(surveyRepository.findById(getQuestionsRequest.getSurveyId()).get());
 			return ResponseEntity.ok(new QuestionListResponse(questions));
 		} else {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Survey does not exist"));
+			return ResponseEntity.badRequest().body(new MessageResponse("survey not found", ResponseType.ERROR));
 		}
 	}
 }

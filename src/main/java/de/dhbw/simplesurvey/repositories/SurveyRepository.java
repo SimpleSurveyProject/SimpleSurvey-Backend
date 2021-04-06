@@ -11,7 +11,7 @@ import de.dhbw.simplesurvey.models.User;
 
 @Repository
 public interface SurveyRepository extends JpaRepository<Survey, Integer> {
-    List<Survey> findByOwner(User owner);
+	List<Survey> findByOwner(User owner);
 
-    Optional<Survey> findById(int id);
+	Optional<Survey> findById(int id);
 }

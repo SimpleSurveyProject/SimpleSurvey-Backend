@@ -11,8 +11,7 @@ import de.dhbw.simplesurvey.models.Survey;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
+	List<Question> findBySurvey(Survey survey);
 
-    List<Question> findBySurvey(Survey survey);
-
-    Optional<Question> findById(int id);
+	Optional<Question> findById(int id);
 }
