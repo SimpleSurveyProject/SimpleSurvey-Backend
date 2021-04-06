@@ -1,14 +1,14 @@
-package de.dhbw.simplesurvey.payload.request;
+package de.dhbw.simplesurvey.payload.request.survey;
 
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 
 @Data
-public class AddAnswerRequest {
+public class AddQuestionRequest {
 	@NotBlank
 	private String text;
 
 	@NotBlank
-	private int questionId;
+	private int surveyId;
 }

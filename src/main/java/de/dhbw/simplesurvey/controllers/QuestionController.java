@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.simplesurvey.models.Question;
-import de.dhbw.simplesurvey.payload.request.AddQuestionRequest;
-import de.dhbw.simplesurvey.payload.request.GetQuestionsRequest;
+import de.dhbw.simplesurvey.payload.request.survey.AddQuestionRequest;
+import de.dhbw.simplesurvey.payload.request.survey.GetQuestionsRequest;
 import de.dhbw.simplesurvey.payload.response.MessageResponse;
 import de.dhbw.simplesurvey.payload.response.QuestionListResponse;
 import de.dhbw.simplesurvey.repositories.QuestionRepository;

@@ -1,4 +1,4 @@
-package de.dhbw.simplesurvey.payload.request;
+package de.dhbw.simplesurvey.payload.request.usermanagement;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

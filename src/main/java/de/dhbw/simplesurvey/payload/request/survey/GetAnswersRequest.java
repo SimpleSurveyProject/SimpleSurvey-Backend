@@ -1,4 +1,4 @@
-package de.dhbw.simplesurvey.payload.request;
+package de.dhbw.simplesurvey.payload.request.survey;
 
 import javax.validation.constraints.NotBlank;
 
