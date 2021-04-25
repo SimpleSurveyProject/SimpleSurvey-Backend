@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +31,14 @@ public class Question {
 	private Integer id;
 
 	@NonNull
+	@Column(nullable = false)
+	private Integer position;
+
+	@NonNull
+	@Enumerated(EnumType.STRING)
+	private Styles style;
+
+	@NonNull
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String text;
 
@@ -41,5 +51,9 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(name = "surveyid", referencedColumnName = "id", nullable = false)
 	private Survey survey;
+
+	public static enum Styles {
+		TEXT, YESNO, ONETOTEN
+	}
 
 }
