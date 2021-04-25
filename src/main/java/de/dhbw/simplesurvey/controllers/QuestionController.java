@@ -45,8 +45,11 @@ public class QuestionController {
 			String username = user.getUsername();
 
 			for (AddQuestionRequest addQuestionRequest : addQuestionRequests) {
-				if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner().getId() == userRepository.findByName(username).get().getId()) {
-					questionRepository.save(new Question(addQuestionRequest.getText(), surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
+				if (surveyRepository.findById(addQuestionRequest.getSurveyId()).get().getOwner()
+						.getId() == userRepository.findByName(username).get().getId()) {
+					questionRepository.save(new Question(addQuestionRequest.getPosition(),
+							addQuestionRequest.getStyle(), addQuestionRequest.getText(),
+							surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
 				}
 			}
 			return ResponseEntity.ok(new MessageResponse("question added successfully", ResponseType.SUCCESS));
@@ -57,7 +60,8 @@ public class QuestionController {
 	@PostMapping("/get")
 	public ResponseEntity<?> getQuestionsForSurvey(@Valid @RequestBody GetQuestionsRequest getQuestionsRequest) {
 		if (surveyRepository.findById(getQuestionsRequest.getSurveyId()).isPresent()) {
-			List<Question> questions = questionRepository.findBySurvey(surveyRepository.findById(getQuestionsRequest.getSurveyId()).get());
+			List<Question> questions = questionRepository
+					.findBySurvey(surveyRepository.findById(getQuestionsRequest.getSurveyId()).get());
 			return ResponseEntity.ok(new QuestionListResponse(questions));
 		} else {
 			return ResponseEntity.badRequest().body(new MessageResponse("survey not found", ResponseType.ERROR));
