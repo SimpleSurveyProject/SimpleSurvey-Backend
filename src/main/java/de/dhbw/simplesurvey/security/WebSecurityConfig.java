@@ -49,9 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder(4);
 	}
 
-	private static final String[] AUTH_WHITELIST = { "/api/v2/api-docs", "/api/swagger-resources",
-			"/api/swagger-resources/**", "/api/configuration/ui", "/api/configuration/security", "/api/swagger-ui.html",
-			"/api/webjars/**", "/api/v3/api-docs/**", "/api/swagger-ui/**", "/api/api/test/**", "/api/api/auth/**" };
+	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
+			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v3/api-docs/**",
+			"/swagger-ui/**", "/api/test/**", "/api/auth/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
