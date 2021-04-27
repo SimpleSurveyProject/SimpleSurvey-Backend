@@ -29,7 +29,7 @@ import de.dhbw.simplesurvey.security.services.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/survey")
+@RequestMapping("/survey")
 public class SurveyController {
 	@Autowired
 	SurveyRepository surveyRepository;
@@ -42,7 +42,8 @@ public class SurveyController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			String username = user.getUsername();
-			Survey survey = new Survey(createSurveyRequest.getTitle(), createSurveyRequest.getDescription(), userRepository.findByName(username).get());
+			Survey survey = new Survey(createSurveyRequest.getTitle(), createSurveyRequest.getDescription(),
+					userRepository.findByName(username).get());
 			surveyRepository.save(survey);
 			return ResponseEntity.ok(new SurveyCreatedResponse(survey.getId()));
 		} else {

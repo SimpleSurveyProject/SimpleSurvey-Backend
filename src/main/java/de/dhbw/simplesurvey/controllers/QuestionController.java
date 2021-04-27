@@ -28,7 +28,7 @@ import de.dhbw.simplesurvey.types.ResponseType;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/question")
+@RequestMapping("/question")
 public class QuestionController {
 	@Autowired
 	QuestionRepository questionRepository;

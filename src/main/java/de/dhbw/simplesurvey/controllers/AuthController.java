@@ -27,7 +27,7 @@ import de.dhbw.simplesurvey.types.ResponseType;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -44,7 +44,8 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -57,7 +58,8 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByName(signUpRequest.getUsername())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("username is already taken", ResponseType.INFO));
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("username is already taken", ResponseType.INFO));
 		}
 
 		User user = new User(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));

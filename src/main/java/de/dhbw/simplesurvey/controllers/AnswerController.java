@@ -28,7 +28,7 @@ import de.dhbw.simplesurvey.types.ResponseType;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/answer")
+@RequestMapping("/answer")
 public class AnswerController {
 	@Autowired
 	AnswerRepository answerRepository;
@@ -47,7 +47,9 @@ public class AnswerController {
 			String username = user.getUsername();
 
 			for (AddAnswerRequest addAnswerRequest : addAnswerRequests) {
-				answerRepository.save(new Answer(addAnswerRequest.getText(), questionRepository.findById(addAnswerRequest.getQuestionId()).get(), userRepository.findByName(username).get()));
+				answerRepository.save(new Answer(addAnswerRequest.getText(),
+						questionRepository.findById(addAnswerRequest.getQuestionId()).get(),
+						userRepository.findByName(username).get()));
 			}
 			return ResponseEntity.ok(MessageResponse.create("question added successfully", ResponseType.SUCCESS));
 		}
@@ -61,8 +63,10 @@ public class AnswerController {
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			String username = user.getUsername();
 			if (questionRepository.findById(getAnswersRequest.getQuestionId()).isPresent()) {
-				if (questionRepository.findById(getAnswersRequest.getQuestionId()).get().getSurvey().getOwner().getId() == userRepository.findByName(username).get().getId()) {
-					List<Answer> answers = answerRepository.findByQuestion(questionRepository.findById(getAnswersRequest.getQuestionId()).get());
+				if (questionRepository.findById(getAnswersRequest.getQuestionId()).get().getSurvey().getOwner()
+						.getId() == userRepository.findByName(username).get().getId()) {
+					List<Answer> answers = answerRepository
+							.findByQuestion(questionRepository.findById(getAnswersRequest.getQuestionId()).get());
 					return ResponseEntity.ok(new AnswerListResponse(answers));
 				}
 				return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
