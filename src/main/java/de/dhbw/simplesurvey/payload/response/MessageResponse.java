@@ -17,4 +17,9 @@ public class MessageResponse {
 	public static MessageResponse getLoginError() {
 		return new MessageResponse("please log in", ResponseType.ERROR);
 	}
+	
+	public static MessageResponse getSecurityError() {
+		return new MessageResponse("not authorized to perform this operation", ResponseType.ERROR);
+	}
+	
 }

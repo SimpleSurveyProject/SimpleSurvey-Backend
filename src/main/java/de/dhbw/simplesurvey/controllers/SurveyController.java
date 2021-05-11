@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.simplesurvey.models.Survey;
-import de.dhbw.simplesurvey.payload.request.survey.CreateSurveyRequest;
+import de.dhbw.simplesurvey.payload.request.survey.EditSurveyRequest;
 import de.dhbw.simplesurvey.payload.request.survey.GetSurveyRequest;
 import de.dhbw.simplesurvey.payload.response.MessageResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyCreatedResponse;
@@ -37,13 +37,12 @@ public class SurveyController {
 	UserRepository userRepository;
 
 	@PostMapping("/create")
-	public ResponseEntity<?> createSurvey(@Valid @RequestBody CreateSurveyRequest createSurveyRequest) {
+	public ResponseEntity<?> createSurvey(@Valid @RequestBody EditSurveyRequest createSurveyRequest) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			String username = user.getUsername();
-			Survey survey = new Survey(createSurveyRequest.getTitle(), createSurveyRequest.getDescription(),
-					userRepository.findByName(username).get());
+			Survey survey = new Survey(createSurveyRequest.getTitle(), createSurveyRequest.getDescription(), userRepository.findByName(username).get());
 			surveyRepository.save(survey);
 			return ResponseEntity.ok(new SurveyCreatedResponse(survey.getId()));
 		} else {
@@ -70,4 +69,26 @@ public class SurveyController {
 		return ResponseEntity.ok(new SurveyResponse(survey));
 
 	}
+
+	@PostMapping("/editsurvey")
+	public ResponseEntity<?> editSurvey(@Valid @RequestBody EditSurveyRequest editSurveyRequest) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+			String username = user.getUsername();
+
+			Survey survey = surveyRepository.findById(editSurveyRequest.getSurveyId()).get();
+			if (!survey.isOwnedBy(username)) {
+				return ResponseEntity.badRequest().body(MessageResponse.getSecurityError());
+			}
+
+			survey.setTitle(editSurveyRequest.getTitle());
+			survey.setDescription(editSurveyRequest.getDescription());
+			surveyRepository.save(survey);
+			return ResponseEntity.ok(new SurveyCreatedResponse(survey.getId()));
+		} else {
+			return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
+		}
+	}
+	
 }

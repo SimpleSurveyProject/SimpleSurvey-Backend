@@ -46,4 +46,8 @@ public class Survey {
 	@JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
 	private User owner;
 
+	public boolean isOwnedBy(String username) {
+		return owner.getName().equalsIgnoreCase(username);
+	}
+	
 }
