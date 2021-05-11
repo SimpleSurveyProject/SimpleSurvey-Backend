@@ -1,25 +1,53 @@
 package de.dhbw.simplesurvey.payload.response;
 
 import de.dhbw.simplesurvey.types.ResponseType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class MessageResponse {
+
 	private String message;
 	private ResponseType type;
 
-	public static MessageResponse create(String message, ResponseType type) {
-		return new MessageResponse(message, type);
+	public static class MessageResponseBuilder {
+
+		private String message;
+		private ResponseType type;
+
+		public MessageResponseBuilder() {
+		}
+
+		MessageResponseBuilder(String message, ResponseType type) {
+			this.message = message;
+			this.type = type;
+		}
+
+		public MessageResponseBuilder message(String message) {
+			this.message = message;
+			return MessageResponseBuilder.this;
+		}
+
+		public MessageResponseBuilder type(ResponseType type) {
+			this.type = type;
+			return MessageResponseBuilder.this;
+		}
+
+		public MessageResponse build() {
+			return new MessageResponse(this);
+		}
+	}
+
+	private MessageResponse(MessageResponseBuilder builder) {
+		this.message = builder.message;
+		this.type = builder.type;
 	}
 
 	public static MessageResponse getLoginError() {
-		return new MessageResponse("please log in", ResponseType.ERROR);
+		return new MessageResponse.MessageResponseBuilder().message("please log in").type(ResponseType.ERROR).build();
 	}
 	
 	public static MessageResponse getSecurityError() {
-		return new MessageResponse("not authorized to perform this operation", ResponseType.ERROR);
+		return new MessageResponse.MessageResponseBuilder().message("not authorized to perform this operation").type(ResponseType.ERROR).build();
 	}
-	
+
 }

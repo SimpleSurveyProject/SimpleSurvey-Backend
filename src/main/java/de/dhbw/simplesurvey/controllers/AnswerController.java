@@ -51,7 +51,8 @@ public class AnswerController {
 						questionRepository.findById(addAnswerRequest.getQuestionId()).get(),
 						userRepository.findByName(username).get()));
 			}
-			return ResponseEntity.ok(MessageResponse.create("question added successfully", ResponseType.SUCCESS));
+
+			return ResponseEntity.ok(new MessageResponse.MessageResponseBuilder().message("question added successfully").type(ResponseType.SUCCESS).build());
 		}
 		return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 	}
@@ -71,7 +72,8 @@ public class AnswerController {
 				}
 				return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 			}
-			return ResponseEntity.badRequest().body(new MessageResponse("question not found", ResponseType.ERROR));
+			
+			return ResponseEntity.badRequest().body(new MessageResponse.MessageResponseBuilder().message("question not found").type(ResponseType.ERROR).build());
 		}
 		return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 	}

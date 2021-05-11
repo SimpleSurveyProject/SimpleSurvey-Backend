@@ -52,7 +52,8 @@ public class QuestionController {
 							surveyRepository.findById(addQuestionRequest.getSurveyId()).get()));
 				}
 			}
-			return ResponseEntity.ok(new MessageResponse("question added successfully", ResponseType.SUCCESS));
+			
+			return ResponseEntity.ok(new MessageResponse.MessageResponseBuilder().message("question added successfully").type(ResponseType.SUCCESS).build());
 		}
 		return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 	}
@@ -64,7 +65,7 @@ public class QuestionController {
 					.findBySurvey(surveyRepository.findById(getQuestionsRequest.getSurveyId()).get());
 			return ResponseEntity.ok(new QuestionListResponse(questions));
 		} else {
-			return ResponseEntity.badRequest().body(new MessageResponse("survey not found", ResponseType.ERROR));
+			return ResponseEntity.badRequest().body(new MessageResponse.MessageResponseBuilder().message("survey not found").type(ResponseType.ERROR).build());
 		}
 	}
 }

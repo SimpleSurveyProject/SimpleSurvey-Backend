@@ -44,8 +44,7 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -58,14 +57,11 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByName(signUpRequest.getUsername())) {
-			return ResponseEntity.badRequest()
-					.body(new MessageResponse("username is already taken", ResponseType.INFO));
+			return ResponseEntity.badRequest().body(new MessageResponse.MessageResponseBuilder().message("username is already taken").type(ResponseType.INFO).build());
 		}
 
 		User user = new User(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));
-
 		userRepository.save(user);
-
-		return ResponseEntity.ok(new MessageResponse("user registered successfully", ResponseType.SUCCESS));
+		return ResponseEntity.ok(new MessageResponse.MessageResponseBuilder().message("user registered successfully").type(ResponseType.SUCCESS).build());
 	}
 }
