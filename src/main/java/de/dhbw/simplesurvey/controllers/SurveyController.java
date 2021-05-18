@@ -119,7 +119,7 @@ public class SurveyController {
 		return false;
 	}
 	
-	@PostMapping("/editsurvey")
+	@PostMapping("/deletesurvey")
 	public ResponseEntity<?> deleteSurvey(@Valid @RequestBody SurveyRequest deleteSurveyRequest) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
