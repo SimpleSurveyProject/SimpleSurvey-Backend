@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.dhbw.simplesurvey.models.Question;
 import de.dhbw.simplesurvey.models.Survey;
 import de.dhbw.simplesurvey.payload.request.survey.EditSurveyRequest;
-import de.dhbw.simplesurvey.payload.request.survey.GetSurveyRequest;
+import de.dhbw.simplesurvey.payload.request.survey.SurveyRequest;
 import de.dhbw.simplesurvey.payload.response.MessageResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyCreatedResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyListResponse;
@@ -76,7 +76,7 @@ public class SurveyController {
 	}
 
 	@PostMapping("/getbyid")
-	public ResponseEntity<?> getSurvey(@Valid @RequestBody GetSurveyRequest getSurveyRequest) {
+	public ResponseEntity<?> getSurvey(@Valid @RequestBody SurveyRequest getSurveyRequest) {
 		Survey survey = surveyRepository.findById(getSurveyRequest.getSurveyId()).get();
 		return ResponseEntity.ok(new SurveyResponse(survey));
 
@@ -117,6 +117,25 @@ public class SurveyController {
 		}
 		
 		return false;
+	}
+	
+	@PostMapping("/editsurvey")
+	public ResponseEntity<?> deleteSurvey(@Valid @RequestBody SurveyRequest deleteSurveyRequest) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+			String username = user.getUsername();
+
+			Survey survey = surveyRepository.findById(deleteSurveyRequest.getSurveyId()).get();
+			if (!survey.isOwnedBy(username)) {
+				return ResponseEntity.badRequest().body(MessageResponse.getSecurityError());
+			}
+			surveyRepository.delete(survey);
+			
+			return ResponseEntity.ok().body(new MessageResponse.MessageResponseBuilder().message("Survey has been deleted.").type(ResponseType.SUCCESS).build());
+		} else {
+			return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
+		}
 	}
 
 }

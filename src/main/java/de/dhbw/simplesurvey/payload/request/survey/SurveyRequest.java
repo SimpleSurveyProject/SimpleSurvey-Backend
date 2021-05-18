@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class GetSurveyRequest {
+public class SurveyRequest {
 	@NotBlank
 	private int surveyId;
 }
