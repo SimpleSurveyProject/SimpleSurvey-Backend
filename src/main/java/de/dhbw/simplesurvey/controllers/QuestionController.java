@@ -31,10 +31,13 @@ import de.dhbw.simplesurvey.types.ResponseType;
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
+	
 	@Autowired
 	QuestionRepository questionRepository;
+	
 	@Autowired
 	SurveyRepository surveyRepository;
+	
 	@Autowired
 	UserRepository userRepository;
 

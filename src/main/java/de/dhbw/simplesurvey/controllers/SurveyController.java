@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.dhbw.simplesurvey.models.Question;
 import de.dhbw.simplesurvey.models.Survey;
 import de.dhbw.simplesurvey.payload.request.survey.EditSurveyRequest;
 import de.dhbw.simplesurvey.payload.request.survey.GetSurveyRequest;
@@ -23,18 +24,29 @@ import de.dhbw.simplesurvey.payload.response.MessageResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyCreatedResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyListResponse;
 import de.dhbw.simplesurvey.payload.response.SurveyResponse;
+import de.dhbw.simplesurvey.repositories.AnswerRepository;
+import de.dhbw.simplesurvey.repositories.QuestionRepository;
 import de.dhbw.simplesurvey.repositories.SurveyRepository;
 import de.dhbw.simplesurvey.repositories.UserRepository;
 import de.dhbw.simplesurvey.security.services.UserDetailsImpl;
+import de.dhbw.simplesurvey.types.ResponseType;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/survey")
 public class SurveyController {
+
 	@Autowired
 	SurveyRepository surveyRepository;
+
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	AnswerRepository answerRepository;
+
+	@Autowired
+	QuestionRepository questionRepository;
 
 	@PostMapping("/create")
 	public ResponseEntity<?> createSurvey(@Valid @RequestBody EditSurveyRequest createSurveyRequest) {
@@ -82,6 +94,10 @@ public class SurveyController {
 				return ResponseEntity.badRequest().body(MessageResponse.getSecurityError());
 			}
 
+			if(hasAnswers(survey)) {
+				return ResponseEntity.badRequest().body(new MessageResponse.MessageResponseBuilder().message("Survey already has answers. It is therefore not possible to change it.").type(ResponseType.ERROR).build());
+			}
+
 			survey.setTitle(editSurveyRequest.getTitle());
 			survey.setDescription(editSurveyRequest.getDescription());
 			surveyRepository.save(survey);
@@ -90,5 +106,17 @@ public class SurveyController {
 			return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 		}
 	}
-	
+
+	private boolean hasAnswers(Survey survey) {
+		List<Question> questions = questionRepository.findBySurvey(survey);
+
+		for (Question question : questions) {
+			if (!answerRepository.findByQuestion(question).isEmpty()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 }
