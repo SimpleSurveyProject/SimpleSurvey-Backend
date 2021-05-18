@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.dhbw.simplesurvey.models.Answer;
 import de.dhbw.simplesurvey.models.Question;
 import de.dhbw.simplesurvey.models.Survey;
 import de.dhbw.simplesurvey.payload.request.survey.EditSurveyRequest;
@@ -79,7 +80,6 @@ public class SurveyController {
 	public ResponseEntity<?> getSurvey(@Valid @RequestBody SurveyRequest getSurveyRequest) {
 		Survey survey = surveyRepository.findById(getSurveyRequest.getSurveyId()).get();
 		return ResponseEntity.ok(new SurveyResponse(survey));
-
 	}
 
 	@PostMapping("/editsurvey")
@@ -130,6 +130,16 @@ public class SurveyController {
 			if (!survey.isOwnedBy(username)) {
 				return ResponseEntity.badRequest().body(MessageResponse.getSecurityError());
 			}
+			
+			List<Question> questions = questionRepository.findBySurvey(survey);
+			for (Question question : questions) {
+				List<Answer> answers = answerRepository.findByQuestion(question);
+				for(Answer answer : answers) {
+					answerRepository.delete(answer);
+				}
+				questionRepository.delete(question);
+			}
+			
 			surveyRepository.delete(survey);
 			
 			return ResponseEntity.ok().body(new MessageResponse.MessageResponseBuilder().message("Survey has been deleted.").type(ResponseType.SUCCESS).build());
