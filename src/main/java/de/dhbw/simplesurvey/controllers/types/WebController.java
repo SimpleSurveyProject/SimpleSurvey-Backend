@@ -5,25 +5,33 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import de.dhbw.simplesurvey.security.services.UserDetailsImpl;
-import lombok.Getter;
 
-@Getter
 public class WebController {
 
-	private boolean isLoggedIn = false;
-	private String username = null;
+	public String getUsername() {
+		if (!isLoggedIn()) {
+			throw new IllegalAccessError("user is not logged in");
+		}
 
-	public WebController() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null) {
-			return;
+		if (authentication != null) {
+			if (!(authentication instanceof AnonymousAuthenticationToken)) {
+				UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+				return user.getUsername();
+			}
 		}
-		
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-			isLoggedIn = true;
+		return null;
 
-			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-			username = user.getUsername();
-		}
 	}
+
+	public boolean isLoggedIn() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			if (!(authentication instanceof AnonymousAuthenticationToken)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
