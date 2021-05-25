@@ -15,6 +15,10 @@ public class WebController {
 
 	public WebController() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication == null) {
+			return;
+		}
+		
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			isLoggedIn = true;
 
