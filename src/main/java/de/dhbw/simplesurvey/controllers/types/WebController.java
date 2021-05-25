@@ -10,10 +10,7 @@ public class WebController {
 
 	public boolean isLoggedIn() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if ((authentication != null) && (!(authentication instanceof AnonymousAuthenticationToken))) {
-				return true;
-		}
-		return false;
+		return ((authentication != null) && (!(authentication instanceof AnonymousAuthenticationToken)));
 	}
 
 	public int getUserId() {
