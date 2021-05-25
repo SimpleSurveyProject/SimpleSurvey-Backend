@@ -14,22 +14,15 @@ public class WebController {
 		}
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			if (!(authentication instanceof AnonymousAuthenticationToken)) {
-				UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-				return user.getUsername();
-			}
-		}
-		return null;
+		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+		return user.getUsername();
 
 	}
 
 	public boolean isLoggedIn() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		if ((authentication != null) && (!(authentication instanceof AnonymousAuthenticationToken))) {
 				return true;
-			}
 		}
 		return false;
 	}
