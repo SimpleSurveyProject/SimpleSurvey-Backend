@@ -1,0 +1,2 @@
+# SimpleSurvey-Backend
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c25daf24d2574f019273a43c223e2623)](https://app.codacy.com/gh/SimpleSurveyProject/SimpleSurvey-Backend?utm_source=github.com&utm_medium=referral&utm_content=SimpleSurveyProject/SimpleSurvey-Backend&utm_campaign=Badge_Grade_Settings)
