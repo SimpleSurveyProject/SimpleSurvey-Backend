@@ -63,10 +63,8 @@ public class AnswerController extends WebController {
 				}
 				return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 			}
-			
 			return ResponseEntity.badRequest().body(new MessageResponse.MessageResponseBuilder().message("question not found").type(ResponseType.ERROR).build());
-		} else {
-			return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 		}
+		return ResponseEntity.badRequest().body(MessageResponse.getLoginError());
 	}
 }

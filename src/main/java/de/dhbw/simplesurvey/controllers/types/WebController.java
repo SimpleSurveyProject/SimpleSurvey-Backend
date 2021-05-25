@@ -8,17 +8,6 @@ import de.dhbw.simplesurvey.security.services.UserDetailsImpl;
 
 public class WebController {
 
-	public String getUsername() {
-		if (!isLoggedIn()) {
-			throw new IllegalAccessError("user is not logged in");
-		}
-
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-		return user.getUsername();
-
-	}
-
 	public boolean isLoggedIn() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if ((authentication != null) && (!(authentication instanceof AnonymousAuthenticationToken))) {
@@ -26,5 +15,25 @@ public class WebController {
 		}
 		return false;
 	}
+
+	public int getUserId() {
+		if (!isLoggedIn()) {
+			throw new IllegalAccessError("user is not logged in");
+		}
+		return getUser().getId();
+	}
+	
+	public String getUsername() {
+		if (!isLoggedIn()) {
+			throw new IllegalAccessError("user is not logged in");
+		}
+		return getUser().getUsername();
+	}
+	
+	private UserDetailsImpl getUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return (UserDetailsImpl) authentication.getPrincipal();
+	}
+
 
 }
